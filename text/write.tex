@@ -1,208 +1,636 @@
 \section{Introdução}
 
-Os sistemas distribuídos representam uma das áreas mais importantes da computação moderna, sendo definidos como um conjunto de computadores independentes que se apresentam aos usuários como um sistema único e coerente \cite{tanenbaum2016sistemas}. Estes sistemas são caracterizados pela ausência de memória compartilhada, comunicação através de mensagens e pela independência de falhas entre os componentes \cite{coulouris2013sistemas}.
+\subsection{Contextualização do Problema}
+
+Os sistemas distribuídos constituem uma das áreas fundamentais da computação moderna, especialmente com o crescimento exponencial da Internet e dos serviços em nuvem. Segundo \citeonline{tanenbaum2016sistemas}, um sistema distribuído é definido como "uma coleção de computadores independentes que se apresenta aos usuários como um sistema único e coerente". Esta definição aparentemente simples esconde uma complexidade substancial relacionada aos desafios de coordenação, comunicação e tolerância a falhas.
+
+A necessidade de sistemas distribuídos emerge de diversos fatores: a demanda por maior poder computacional, a necessidade de compartilhamento de recursos geograficamente dispersos, a busca por maior disponibilidade e tolerância a falhas, e a crescente digitalização de processos que requerem acesso global \cite{coulouris2013sistemas}.
+
+\subsection{Caracterização dos Sistemas Distribuídos}
+
+Os sistemas distribuídos apresentam características distintivas que os diferenciam dos sistemas centralizados tradicionais:
+
+\begin{itemize}
+    \item \textbf{Ausência de memória compartilhada}: Os processos comunicam-se exclusivamente através de troca de mensagens
+    \item \textbf{Execução concorrente}: Múltiplos processos executam simultaneamente em diferentes nós
+    \item \textbf{Falhas independentes}: Componentes podem falhar independentemente sem afetar todo o sistema
+    \item \textbf{Ausência de relógio global}: Não existe sincronização temporal perfeita entre os nós
+\end{itemize}
 
 \begin{figure}[H]
 \centering
-\captionof{figure}{Arquitetura de Sistema Distribuído.}
+\captionof{figure}{Arquitetura típica de um sistema distribuído mostrando múltiplos nós conectados via rede.}
 \includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
 \label{fig:arquitetura_distribuida}
 {\fontsize{10pt}{\baselineskip}\selectfont
-  Fonte: Adaptado de \citeonline{tanenbaum2016sistemas}}
+  Fonte: Elaborado pelo autor baseado em \citeonline{tanenbaum2016sistemas}}
 \end{figure}
 
-A evolução das redes de computadores possibilitou o desenvolvimento de sistemas distribuídos cada vez mais complexos e eficientes. Segundo \citeonline{kurose2021redes}, as redes modernas seguem uma abordagem em camadas que facilita a implementação e manutenção de protocolos de comunicação. O modelo TCP/IP, especificado inicialmente na RFC 793 \cite{rfc793:1981}, continua sendo a base fundamental para a comunicação em sistemas distribuídos.
+\subsection{Fundamentação Teórica}
 
-Um dos principais desafios em sistemas distribuídos é o problema da sincronização e ordenação de eventos. \citeonline{lamport1978time} demonstrou que, na ausência de relógios perfeitamente sincronizados, é necessário estabelecer uma ordem lógica dos eventos através de algoritmos específicos. Este trabalho seminal estabeleceu as bases teóricas para muitos protocolos de consenso utilizados atualmente.
+A base teórica dos sistemas distribuídos foi estabelecida através de trabalhos seminais que ainda hoje orientam o desenvolvimento de novas soluções. \citeonline{lamport1978time} introduziu o conceito de tempo lógico e relógios vetoriais, fundamentais para a ordenação de eventos em sistemas distribuídos. Este trabalho demonstrou que, na ausência de relógios perfeitamente sincronizados, é possível estabelecer uma ordem causal entre eventos utilizando apenas a comunicação entre processos.
 
-O teorema CAP, proposto por \citeonline{cap2000theorem}, estabelece que em sistemas distribuídos é impossível garantir simultaneamente consistência (Consistency), disponibilidade (Availability) e tolerância a partições (Partition tolerance). Este teorema fundamental influencia diretamente as decisões de projeto em sistemas distribuídos modernos.
+O teorema CAP, formalizado por \citeonline{cap2000theorem}, estabelece uma das limitações fundamentais dos sistemas distribuídos: é impossível garantir simultaneamente Consistência, Disponibilidade e Tolerância a Partições de rede. Este teorema força os projetistas a fazer escolhas conscientes sobre quais propriedades priorizar em diferentes cenários.
 
-Este relatório apresenta uma análise detalhada dos principais conceitos, algoritmos e tecnologias empregadas em redes e sistemas distribuídos, fundamentando-se em literatura acadêmica reconhecida e exemplos práticos de implementação.
+\subsection{Objetivos e Escopo}
 
-\section{Fundamentos Teóricos e Metodologia}
+Este trabalho tem como objetivo principal apresentar uma análise sistemática dos fundamentos teóricos e práticos de redes e sistemas distribuídos, abordando:
 
-\subsection{Algoritmos de Consenso Distribuído}
+\begin{enumerate}
+    \item Os fundamentos teóricos que sustentam o desenvolvimento de sistemas distribuídos
+    \item Os principais algoritmos e protocolos utilizados para coordenação e comunicação
+    \item As arquiteturas e padrões de design mais relevantes
+    \item Exemplos práticos de implementação e análise de desempenho
+    \item Discussão sobre desafios atuais e tendências futuras
+\end{enumerate}
 
-Os algoritmos de consenso são fundamentais para garantir a consistência em sistemas distribuídos. O algoritmo de Lamport para ordenação lógica de eventos é um dos pilares teóricos desta área.
+A metodologia empregada baseia-se em revisão bibliográfica de literatura acadêmica consolidada, análise de implementações práticas e desenvolvimento de exemplos demonstrativos dos principais conceitos abordados.
 
-\begin{algorithm}[H]
-  \SetAlgoLined
-  \KwData{Conjunto de processos $P = \{p_1, p_2, ..., p_n\}$}
-  \KwIn{Evento local $e_i$ no processo $p_i$}
-  \KwResult{Timestamp lógico ordenado}
-  
-  \Begin{
-    Inicializar $LC_i = 0$ para cada processo $p_i$\;
-    
-    \For{cada evento local $e$ em $p_i$}{
-      $LC_i = LC_i + 1$\;
-      timestamp$(e) = LC_i$\;
-    }
-    
-    \If{$p_i$ envia mensagem $m$ para $p_j$}{
-      $LC_i = LC_i + 1$\;
-      timestamp$(m) = LC_i$\;
-      enviar $(m, LC_i)$ para $p_j$\;
-    }
-    
-    \If{$p_j$ recebe mensagem $(m, LC_k)$ de $p_i$}{
-      $LC_j = \max(LC_j, LC_k) + 1$\;
-      processar mensagem $m$\;
-    }
-  }
-  
-  \caption{Algoritmo de Relógios Lógicos de Lamport}
-  {\fontsize{10pt}{\baselineskip}\selectfont
-    Fonte: Adaptado de \citeonline{lamport1978time}}
-\end{algorithm}
+\section{Desenvolvimento}
 
-\subsection{Protocolos de Comunicação em Redes}
+\subsection{Fundamentos de Comunicação em Redes}
 
-A pilha de protocolos TCP/IP fornece a base para comunicação confiável em sistemas distribuídos. A Tabela~\ref{tab:protocolos} apresenta os principais protocolos utilizados em cada camada.
+A comunicação eficiente entre nós em sistemas distribuídos depende fundamentalmente da infraestrutura de redes subjacente. O modelo de referência TCP/IP, documentado inicialmente na RFC~793 \cite{rfc793:1981}, estabelece uma arquitetura em camadas que facilita a implementação de protocolos robustos e escaláveis.
+
+\subsubsection{Pilha de Protocolos TCP/IP}
+
+A pilha TCP/IP organiza as funcionalidades de rede em quatro camadas principais, cada uma responsável por aspectos específicos da comunicação. A Tabela~\ref{tab:protocolos_tcpip} apresenta os principais protocolos utilizados em cada camada.
 
 \begin{table}[H]
 \centering
-  \caption{Principais Protocolos da Pilha TCP/IP}
-  \begin{tabular}{|l|l|l|l|}
-      \hline
-      \textbf{Camada} & \textbf{Protocolo} & \textbf{Função} & \textbf{RFC} \\
-      \hline
-      Aplicação & HTTP/HTTPS & Transferência de hipertexto & RFC 2616 \\
-      \hline
-      Aplicação & FTP & Transferência de arquivos & RFC 959 \\
-      \hline
-      Transporte & TCP & Transporte confiável & RFC 793 \\
-      \hline
-      Transporte & UDP & Transporte não confiável & RFC 768 \\
-      \hline
-      Internet & IP & Roteamento de pacotes & RFC 791 \\
-      \hline
-      Enlace & Ethernet & Acesso ao meio físico & IEEE 802.3 \\
-      \hline
-  \end{tabular}
-  \label{tab:protocolos}
-  \flushleft % Alinha à esquerda a referência
-
-  {\fontsize{10pt}{\baselineskip}\selectfont
-    Fonte: Adaptado de \citeonline{kurose2021redes}}
+\caption{Protocolos da pilha TCP/IP utilizados em sistemas distribuídos}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Camada} & \textbf{Protocolo} & \textbf{Função Principal} & \textbf{RFC} \\
+\hline
+Aplicação & HTTP/HTTPS & Transferência de hipertexto & RFC~2616 \\
+\hline
+Aplicação & DNS & Resolução de nomes & RFC~1035 \\
+\hline
+Aplicação & SMTP & Correio eletrônico & RFC~5321 \\
+\hline
+Transporte & TCP & Transporte confiável & RFC~793 \\
+\hline
+Transporte & UDP & Transporte não confiável & RFC~768 \\
+\hline
+Internet & IPv4/IPv6 & Roteamento de pacotes & RFC~791, RFC~8200 \\
+\hline
+Enlace & Ethernet & Acesso ao meio físico & IEEE~802.3 \\
+\hline
+\end{tabular}
+\label{tab:protocolos_tcpip}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Adaptado de \citeonline{kurose2021redes}}
 \end{table}
 
+\subsubsection{Características da Comunicação Distribuída}
 
-\section{Análise de Sistemas Distribuídos}
-
-\subsection{Características e Propriedades}
-
-Os sistemas distribuídos modernos devem atender a diversos requisitos não funcionais para garantir sua eficácia. As principais características incluem escalabilidade, disponibilidade, tolerância a falhas e transparência \cite{coulouris2013sistemas}.
-
-A escalabilidade refere-se à capacidade do sistema de manter seu desempenho quando o número de usuários, recursos ou a carga de trabalho aumenta. Existem três tipos principais de escalabilidade: escalabilidade de tamanho, geográfica e administrativa \cite{tanenbaum2016sistemas}.
-
-\subsection{Modelos de Arquitetura}
-
-Os sistemas distribuídos podem seguir diferentes modelos arquiteturais, cada um com suas vantagens e desvantagens específicas:
+A comunicação em sistemas distribuídos apresenta características particulares que influenciam diretamente o design de aplicações. \citeonline{coulouris2013sistemas} destacam os seguintes aspectos fundamentais:
 
 \begin{enumerate}
-    \item \textbf{Cliente-Servidor}: Modelo tradicional onde clientes fazem requisições a servidores
-    \item \textbf{Peer-to-Peer (P2P)}: Todos os nós podem atuar como cliente e servidor
-    \item \textbf{Arquitetura em Camadas}: Organização hierárquica de serviços
-    \item \textbf{Microserviços}: Decomposição de aplicações em serviços pequenos e independentes
+    \item \textbf{Latência de rede}: O tempo necessário para transmissão de mensagens entre nós
+    \item \textbf{Largura de banda limitada}: Restrições na capacidade de transmissão
+    \item \textbf{Perda de mensagens}: Possibilidade de mensagens não chegarem ao destino
+    \item \textbf{Ordem de entrega}: Mensagens podem chegar fora de ordem
+    \item \textbf{Falhas de rede}: Partições temporárias ou permanentes na conectividade
 \end{enumerate}
 
-\subsection{Implementação de Comunicação Distribuída}
+\subsection{Algoritmos Fundamentais para Sistemas Distribuídos}
 
-O exemplo a seguir demonstra a implementação básica de um algoritmo de eleição em sistemas distribuídos:
+\subsubsection{Relógios Lógicos de Lamport}
 
-\subsection{Algoritmo de Eleição em Anel}
-
-Um exemplo prático de algoritmo distribuído é o algoritmo de eleição em anel, usado para eleger um coordenador em sistemas distribuídos.
+O algoritmo de relógios lógicos, proposto por \citeonline{lamport1978time}, resolve o problema fundamental de ordenação de eventos em sistemas distribuídos onde não existe sincronização temporal perfeita.
 
 \begin{algorithm}[H]
-  \caption{Algoritmo de Eleição em Anel}
-  \label{alg:eleicao_anel}
-  \Entrada{Conjunto de processos $P = \{p_0, p_1, \ldots, p_{n-1}\}$ organizados em anel}
-  \Saida{Eleição de um coordenador}
-  
-  \Inicio{
-    \Comment{Quando um processo detecta falha do coordenador} \\
-    \If{processo $p_i$ detecta falha do coordenador}{
-      enviar mensagem ELEIÇÃO($p_i$) para próximo processo ativo no anel\;
-      $participando \leftarrow verdadeiro$\;
-    }
-    
-    \Comment{Ao receber mensagem de eleição} \\
-    \If{$p_j$ recebe ELEIÇÃO($lista$)}{
-      \If{$p_j \notin lista$}{
-        adicionar $p_j$ à $lista$\;
-        enviar ELEIÇÃO($lista$) para próximo processo no anel\;
-        $participando \leftarrow verdadeiro$\;
-      }
-      \Else{
-        \Comment{A mensagem deu volta completa no anel} \\
-        $coordenador \leftarrow \max(lista)$\;
-        enviar COORDENADOR($coordenador$) para próximo processo\;
-      }
-    }
-    
-    \Comment{Ao receber mensagem de coordenador} \\
-    \If{$p_k$ recebe COORDENADOR($coord$)}{
-      $coordenador \leftarrow coord$\;
-      $participando \leftarrow falso$\;
-      \If{$p_k \neq coord$}{
-        enviar COORDENADOR($coord$) para próximo processo\;
-      }
-    }
-  }
+\SetAlgoLined
+\KwData{Conjunto de processos $P = \{p_1, p_2, \ldots, p_n\}$}
+\KwIn{Evento local $e_i$ no processo $p_i$}
+\KwResult{Timestamp lógico ordenado globalmente}
 
-  \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: Adaptado de \citeonline{tanenbaum2016sistemas}}
+\Begin{
+    \Comment{Inicialização}
+    Inicializar $LC_i = 0$ para cada processo $p_i$\;
+    
+    \Comment{Para eventos locais}
+    \For{cada evento local $e$ em $p_i$}{
+        $LC_i = LC_i + 1$\;
+        timestamp$(e) = LC_i$\;
+    }
+    
+    \Comment{Ao enviar mensagem}
+    \If{processo $p_i$ envia mensagem $m$ para $p_j$}{
+        $LC_i = LC_i + 1$\;
+        timestamp$(m) = LC_i$\;
+        enviar $(m, LC_i)$ para $p_j$\;
+    }
+    
+    \Comment{Ao receber mensagem}
+    \If{processo $p_j$ recebe mensagem $(m, LC_k)$ de $p_i$}{
+        $LC_j = \max(LC_j, LC_k) + 1$\;
+        processar mensagem $m$ com timestamp atualizado\;
+    }
+}
+
+\caption{Algoritmo de Relógios Lógicos de Lamport}
+\label{alg:lamport_clocks}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Adaptado de \citeonline{lamport1978time}}
+\end{algorithm}
+
+Este algoritmo garante que se um evento $a$ acontece antes de um evento $b$ (notação $a \rightarrow b$), então o timestamp de $a$ será menor que o timestamp de $b$. Esta propriedade é fundamental para manter consistência causal em sistemas distribuídos.
+
+\subsubsection{Algoritmo de Eleição em Anel}
+
+O algoritmo de eleição em anel é utilizado para selecionar um coordenador entre os processos ativos de um sistema distribuído organizado em topologia circular.
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{Processos $P = \{p_0, p_1, \ldots, p_{n-1}\}$ organizados em anel}
+\KwResult{Eleição de um processo coordenador}
+
+\Begin{
+    \Comment{Detecção de falha do coordenador}
+    \If{processo $p_i$ detecta falha do coordenador atual}{
+        criar lista\_candidatos $= [p_i]$\;
+        enviar ELEIÇÃO(lista\_candidatos) para próximo processo ativo\;
+        estado $\leftarrow$ participando\;
+    }
+    
+    \Comment{Recebimento de mensagem de eleição}
+    \Upon{receber ELEIÇÃO(lista) de processo anterior}{
+        \If{$p_j \notin$ lista}{
+            adicionar $p_j$ à lista\;
+            enviar ELEIÇÃO(lista) para próximo processo\;
+            estado $\leftarrow$ participando\;
+        }
+        \Else{
+            \Comment{Mensagem completou o anel}
+            novo\_coordenador $\leftarrow \max($lista$)$\;
+            enviar COORDENADOR(novo\_coordenador) para próximo processo\;
+        }
+    }
+    
+    \Comment{Confirmação do novo coordenador}
+    \Upon{receber COORDENADOR(coord)}{
+        coordenador\_atual $\leftarrow$ coord\;
+        estado $\leftarrow$ não\_participando\;
+        \If{$p_k \neq$ coord}{
+            enviar COORDENADOR(coord) para próximo processo\;
+        }
+    }
+}
+
+\caption{Algoritmo de Eleição em Anel}
+\label{alg:ring_election}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Adaptado de \citeonline{tanenbaum2016sistemas}}
+\end{algorithm}
+
+\subsection{Arquiteturas de Sistemas Distribuídos}
+
+\subsubsection{Modelo Cliente-Servidor}
+
+O modelo cliente-servidor representa a arquitetura mais tradicional em sistemas distribuídos, onde processos clientes fazem requisições a processos servidores especializados. Esta arquitetura apresenta as seguintes características \cite{coulouris2013sistemas}:
+
+\begin{itemize}
+    \item \textbf{Separação clara de responsabilidades}: Clientes focam na interface do usuário, servidores no processamento
+    \item \textbf{Centralização de recursos}: Facilita controle de acesso e manutenção
+    \item \textbf{Escalabilidade limitada}: Servidor pode se tornar gargalo
+    \item \textbf{Ponto único de falha}: Falha do servidor afeta todos os clientes
+\end{itemize}
+
+\subsubsection{Arquitetura Peer-to-Peer (P2P)}
+
+Na arquitetura P2P, todos os nós podem atuar simultaneamente como clientes e servidores, distribuindo responsabilidades e recursos. \citeonline{tanenbaum2016sistemas} identificam dois tipos principais:
+
+\begin{enumerate}
+    \item \textbf{P2P Estruturado}: Utiliza algoritmos como DHT (Distributed Hash Table) para organização
+    \item \textbf{P2P Não Estruturado}: Baseado em descoberta por flooding ou algoritmos de busca aleatória
+\end{enumerate}
+
+\subsection{Protocolos de Consenso e Coordenação}
+
+\subsubsection{O Teorema CAP}
+
+O teorema CAP, formalizado por \citeonline{cap2000theorem}, estabelece que em sistemas distribuídos sujeitos a partições de rede, é impossível garantir simultaneamente:
+
+\begin{itemize}
+    \item \textbf{Consistência (C)}: Todos os nós veem os mesmos dados simultaneamente
+    \item \textbf{Disponibilidade (A)}: O sistema permanece operacional
+    \item \textbf{Tolerância a Partições (P)}: O sistema continua funcionando mesmo com falhas de comunicação
+\end{itemize}
+
+Esta limitação fundamental força os projetistas a escolherem entre sistemas CP (consistentes e tolerantes a partições) ou AP (disponíveis e tolerantes a partições).
+
+\subsubsection{Implementação de Consenso Distribuído}
+
+A implementação de consenso em sistemas distribuídos requer algoritmos específicos que garantam acordo entre os nós mesmo na presença de falhas. O exemplo a seguir demonstra um protocolo básico de consenso por maioria:
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{Conjunto de $n$ processos, valor inicial $v_i$ para cada processo $p_i$}
+\KwResult{Consenso sobre um valor único}
+
+\Begin{
+    \Comment{Fase 1: Coleta de propostas}
+    \For{cada processo $p_i$}{
+        broadcast PROPOSTA($v_i$) para todos os processos\;
+        receber PROPOSTA($v_j$) de todos os processos $p_j$\;
+    }
+    
+    \Comment{Fase 2: Decisão por maioria}
+    \For{cada processo $p_i$}{
+        contar ocorrências de cada valor recebido\;
+        $valor\_consenso \leftarrow$ valor com maior número de ocorrências\;
+        
+        \If{múltiplos valores têm mesma frequência máxima}{
+            $valor\_consenso \leftarrow \min($valores\_empatados$)$\;
+        }
+        
+        broadcast DECISÃO($valor\_consenso$)\;
+    }
+    
+    \Comment{Fase 3: Confirmação}
+    aguardar DECISÃO de maioria dos processos\;
+    \If{todas as decisões são idênticas}{
+        confirmar $valor\_consenso$\;
+    }
+    \Else{
+        reiniciar protocolo\;
+    }
+}
+
+\caption{Protocolo de Consenso por Maioria Simples}
+\label{alg:majority_consensus}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Elaborado pelo autor baseado em \citeonline{coulouris2013sistemas}}
 \end{algorithm}
 
 
-\subsection{Análise de Desempenho}
+\section{Análise de Sistemas Distribuídos Modernos}
 
-A análise de desempenho em sistemas distribuídos envolve métricas como latência, throughput, disponibilidade e escalabilidade. A Figura~\ref{fig:comparacao_arquiteturas} apresenta uma comparação entre diferentes arquiteturas distribuídas.
+\subsection{Métricas de Desempenho e Avaliação}
 
-\begin{figure}[H]
-  \centering
-  \caption{Comparação de Arquiteturas Distribuídas}
-  \subfigure[Cliente-Servidor.\label{fig:cliente_servidor}]{\includegraphics[scale=0.4]{figure/cliente-server.png}}
-  \subfigure[Peer-to-Peer.\label{fig:p2p}]{\includegraphics[scale=.4]{figure/peer-to-peer.png}}
-  \label{fig:comparacao_arquiteturas}
+A avaliação de sistemas distribuídos requer métricas específicas que capturem as características únicas destes ambientes. As principais métricas utilizadas incluem \cite{tanenbaum2016sistemas}:
 
-  \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: Adaptado de \citeonline{coulouris2013sistemas}}
-\end{figure}
-
-\subsection{Protocolos de Consenso}
-
-Os protocolos de consenso são essenciais para manter a consistência em sistemas distribuídos. Algoritmos como Paxos, Raft e PBFT (Practical Byzantine Fault Tolerance) são amplamente utilizados em sistemas reais \cite{lamport1978time}. Cada protocolo apresenta diferentes garantias de segurança e vivacidade, adequadas para cenários específicos.
-
-
-
-\section{Discussão e Considerações}
-
-\subsection{Desafios Atuais}
-
-Os sistemas distribuídos enfrentam diversos desafios que continuam sendo objeto de pesquisa ativa. Entre os principais desafios, destacam-se:
+\subsubsection{Métricas de Latência e Throughput}
 
 \begin{itemize}
-    \item \textbf{Gerenciamento de Estado}: Manter consistência entre múltiplos nós
-    \item \textbf{Detecção de Falhas}: Identificar e recuperar de falhas de rede e hardware
-    \item \textbf{Partições de Rede}: Lidar com a separação temporária de nós
-    \item \textbf{Escalabilidade}: Manter desempenho com crescimento do sistema
+    \item \textbf{Latência de comunicação}: Tempo necessário para transmissão de uma mensagem entre dois nós
+    \item \textbf{Throughput}: Número de operações processadas por unidade de tempo
+    \item \textbf{Latência de consenso}: Tempo necessário para que todos os nós concordem sobre um valor
+    \item \textbf{Tempo de recuperação}: Tempo necessário para recuperação após falhas
 \end{itemize}
 
-\subsection{Tendências Futuras}
+A Tabela~\ref{tab:metricas_comparacao} apresenta uma comparação entre diferentes arquiteturas considerando estas métricas fundamentais.
 
-As tendências emergentes em sistemas distribuídos incluem computação em borda (edge computing), blockchain, sistemas auto-adaptativos e inteligência artificial distribuída. Estas tecnologias promovem maior autonomia e eficiência dos sistemas \cite{coulouris2013sistemas}.
+\begin{table}[H]
+\centering
+\caption{Comparação de métricas entre arquiteturas distribuídas}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Arquitetura} & \textbf{Latência} & \textbf{Throughput} & \textbf{Escalabilidade} & \textbf{Tolerância a Falhas} \\
+\hline
+Cliente-Servidor & Baixa & Média & Limitada & Baixa \\
+\hline
+P2P Estruturado & Média & Alta & Alta & Alta \\
+\hline
+P2P Não Estruturado & Alta & Baixa & Limitada & Média \\
+\hline
+Microserviços & Média & Alta & Muito Alta & Alta \\
+\hline
+Blockchain & Muito Alta & Baixa & Limitada & Muito Alta \\
+\hline
+\end{tabular}
+\label{tab:metricas_comparacao}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Elaborado pelo autor baseado em \citeonline{coulouris2013sistemas}}
+\end{table}
 
-A evolução das redes 5G e 6G também impactará significativamente o design de sistemas distribuídos, possibilitando latências ultra-baixas e maior largura de banda \cite{cisco2019networking}.
+\subsection{Estudos de Caso Práticos}
+
+\subsubsection{Sistema de Arquivos Distribuído}
+
+Um exemplo prático da aplicação dos conceitos estudados é a implementação de um sistema de arquivos distribuído. Este sistema deve garantir:
+
+\begin{enumerate}
+    \item \textbf{Consistência}: Todos os nós devem ter a mesma visão dos arquivos
+    \item \textbf{Disponibilidade}: Os arquivos devem estar acessíveis mesmo com falhas parciais
+    \item \textbf{Partição de dados}: Distribuição eficiente dos arquivos entre os nós
+    \item \textbf{Replicação}: Cópias redundantes para tolerância a falhas
+\end{enumerate}
+
+\subsubsection{Protocolo de Replicação de Estado}
+
+O algoritmo a seguir demonstra um protocolo básico para replicação de estado em sistemas distribuídos:
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData{Conjunto de réplicas $R = \{r_1, r_2, \ldots, r_n\}$, operação $op$}
+\KwResult{Estado replicado consistentemente}
+
+\Begin{
+    \Comment{Fase de preparação}
+    coordenador $\leftarrow$ selecionar\_coordenador()\;
+    
+    \For{cada réplica $r_i \in R$}{
+        enviar PREPARE($op$, timestamp) para $r_i$\;
+    }
+    
+    \Comment{Coleta de votos}
+    votos\_recebidos $\leftarrow 0$\;
+    votos\_positivos $\leftarrow 0$\;
+    
+    \While{votos\_recebidos $< |R|$ AND timeout não expirado}{
+        \Upon{receber VOTE(voto) de réplica $r_j$}{
+            votos\_recebidos $\leftarrow$ votos\_recebidos $+ 1$\;
+            \If{voto = SIM}{
+                votos\_positivos $\leftarrow$ votos\_positivos $+ 1$\;
+            }
+        }
+    }
+    
+    \Comment{Decisão e confirmação}
+    \If{votos\_positivos $\geq \lfloor |R|/2 \rfloor + 1$}{
+        decisão $\leftarrow$ COMMIT\;
+        \For{cada réplica $r_i \in R$}{
+            enviar COMMIT($op$) para $r_i$\;
+        }
+        aplicar operação $op$ no estado local\;
+    }
+    \Else{
+        decisão $\leftarrow$ ABORT\;
+        \For{cada réplica $r_i \in R$}{
+            enviar ABORT($op$) para $r_i$\;
+        }
+    }
+}
+
+\caption{Protocolo de Replicação de Estado por Consenso}
+\label{alg:state_replication}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Adaptado de \citeonline{coulouris2013sistemas}}
+\end{algorithm}
+
+\subsection{Análise de Escalabilidade}
+
+A escalabilidade representa um dos maiores desafios em sistemas distribuídos. \citeonline{tanenbaum2016sistemas} identificam três dimensões principais de escalabilidade:
+
+\subsubsection{Escalabilidade de Tamanho}
+
+Refere-se à capacidade do sistema de manter desempenho aceitável quando o número de usuários ou recursos aumenta. Fatores limitantes incluem:
+
+\begin{itemize}
+    \item Gargalos de comunicação centralizados
+    \item Limitações de largura de banda
+    \item Sobrecarga de coordenação entre nós
+    \item Complexidade algorítmica não linear
+\end{itemize}
+
+\subsubsection{Escalabilidade Geográfica}
+
+Relaciona-se com a capacidade de operar eficientemente quando os nós estão geograficamente distribuídos. Principais desafios:
+
+\begin{itemize}
+    \item Latência de comunicação inter-continental
+    \item Diferenças de fuso horário para coordenação
+    \item Regulamentações legais diferentes
+    \item Qualidade variável de conexões de rede
+\end{itemize}
+
+\subsubsection{Escalabilidade Administrativa}
+
+Envolve a capacidade de integrar domínios administrativos diferentes mantendo a funcionalidade do sistema.
+
+\begin{figure}[H]
+\centering
+\captionof{figure}{Gráfico comparativo de escalabilidade entre diferentes arquiteturas distribuídas}
+\includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
+\label{fig:escalabilidade_comparacao}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Elaborado pelo autor}
+\end{figure}
+
+\subsection{Tolerância a Falhas e Recuperação}
+
+\subsubsection{Classificação de Falhas}
+
+Os sistemas distribuídos devem lidar com diferentes tipos de falhas \cite{coulouris2013sistemas}:
+
+\begin{enumerate}
+    \item \textbf{Falhas por omissão}: Processos param de responder
+    \item \textbf{Falhas de temporização}: Processos respondem muito lentamente
+    \item \textbf{Falhas de resposta}: Processos respondem incorretamente
+    \item \textbf{Falhas arbitrárias (Bizantinas)}: Comportamento completamente anômalo
+\end{enumerate}
+
+\subsubsection{Estratégias de Recuperação}
+
+Para cada tipo de falha, diferentes estratégias de recuperação podem ser empregadas:
+
+\begin{itemize}
+    \item \textbf{Detecção ativa}: Heartbeats e timeouts para identificar falhas
+    \item \textbf{Replicação}: Múltiplas cópias de dados e serviços
+    \item \textbf{Checkpointing}: Salvamento periódico do estado do sistema
+    \item \textbf{Log de transações}: Registro de operações para recuperação
+\end{itemize}
+
+\subsection{Segurança em Sistemas Distribuídos}
+
+A segurança em sistemas distribuídos apresenta desafios únicos devido à natureza descentralizada da comunicação e do controle. Os principais aspectos de segurança incluem:
+
+\subsubsection{Autenticação e Autorização}
+
+\begin{itemize}
+    \item \textbf{Autenticação mútua}: Verificação de identidade bilateral
+    \item \textbf{Tokens de acesso}: Credenciais distribuídas para autorização
+    \item \textbf{Certificados digitais}: PKI para estabelecimento de confiança
+    \item \textbf{Single Sign-On (SSO)}: Autenticação unificada entre serviços
+\end{itemize}
+
+\subsubsection{Comunicação Segura}
+
+A proteção da comunicação entre nós é fundamental e envolve:
+
+\begin{itemize}
+    \item \textbf{Criptografia de canal}: TLS/SSL para proteção em trânsito
+    \item \textbf{Integridade de mensagens}: Checksums e assinaturas digitais
+    \item \textbf{Não repúdio}: Evidências criptográficas de comunicação
+    \item \textbf{Proteção contra replay}: Timestamps e nonces
+\end{itemize}
+
+
+
+\section{Discussão e Análise Crítica}
+
+\subsection{Desafios Contemporâneos}
+
+Os sistemas distribuídos modernos enfrentam desafios que vão além dos problemas clássicos identificados na literatura fundacional. \citeonline{coulouris2013sistemas} destacam que, embora os fundamentos teóricos permaneçam válidos, a escala e complexidade dos sistemas atuais introduzem novos problemas.
+
+\subsubsection{Complexidade Emergente}
+
+A interação entre múltiplos serviços distribuídos pode gerar comportamentos emergentes difíceis de prever durante o projeto. Principais manifestações incluem:
+
+\begin{itemize}
+    \item \textbf{Cascata de falhas}: Falha de um componente pode propagar-se rapidamente
+    \item \textbf{Oscilações de carga}: Sistemas de balanceamento podem criar instabilidades
+    \item \textbf{Deadlocks distribuídos}: Esperas circulares entre recursos remotos
+    \item \textbf{Inconsistências temporárias}: Estados intermediários visíveis durante transições
+\end{itemize}
+
+\subsubsection{Desafios de Observabilidade}
+
+A natureza distribuída dificulta o monitoramento e diagnóstico de problemas. Soluções modernas incluem:
+
+\begin{enumerate}
+    \item \textbf{Distributed Tracing}: Rastreamento de requisições através de múltiplos serviços
+    \item \textbf{Métricas agregadas}: Coleta centralizada de dados de performance
+    \item \textbf{Logs estruturados}: Padronização para correlação de eventos
+    \item \textbf{Health checks distribuídos}: Verificação contínua de disponibilidade
+\end{enumerate}
+
+\subsection{Evolução das Arquiteturas}
+
+\subsubsection{Transição para Microserviços}
+
+A arquitetura de microserviços representa uma evolução natural dos sistemas distribuídos tradicionais, oferecendo maior granularidade e independência de desenvolvimento. Contudo, introduz novos desafios \cite{tanenbaum2016sistemas}:
+
+\begin{itemize}
+    \item \textbf{Coordenação de transações}: Necessidade de protocolos como Saga Pattern
+    \item \textbf{Descoberta de serviços}: Mecanismos dinâmicos para localização de endpoints
+    \item \textbf{Versionamento de APIs}: Compatibilidade entre versões diferentes
+    \item \textbf{Overhead de comunicação}: Aumento da latência por múltiplos hops
+\end{itemize}
+
+\subsubsection{Computação em Borda (Edge Computing)}
+
+A computação em borda aproxima o processamento dos dados dos usuários finais, criando novos paradigmas para sistemas distribuídos:
+
+\begin{table}[H]
+\centering
+\caption{Comparação entre Cloud Computing e Edge Computing}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Característica} & \textbf{Cloud Computing} & \textbf{Edge Computing} \\
+\hline
+Latência & 50-100ms & 1-10ms \\
+\hline
+Largura de banda & Alta & Limitada \\
+\hline
+Recursos computacionais & Muito altos & Moderados \\
+\hline
+Confiabilidade & Muito alta & Moderada \\
+\hline
+Custo de comunicação & Alto & Baixo \\
+\hline
+Processamento local & Limitado & Extensivo \\
+\hline
+\end{tabular}
+\label{tab:cloud_vs_edge}
+{\fontsize{10pt}{\baselineskip}\selectfont
+Fonte: Adaptado de \citeonline{cisco2019networking}}
+\end{table}
+
+\subsection{Tecnologias Emergentes}
+
+\subsubsection{Blockchain e Sistemas Distribuídos}
+
+A tecnologia blockchain representa uma aplicação específica dos princípios de sistemas distribuídos, com foco em consenso sem autoridade central. Características distintivas:
+
+\begin{itemize}
+    \item \textbf{Consenso por prova de trabalho}: Algoritmo computacionalmente intensivo
+    \item \textbf{Imutabilidade}: Registros permanentes através de criptografia
+    \item \textbf{Descentralização completa}: Ausência de autoridade central
+    \item \textbf{Tolerância a falhas bizantinas}: Resistência a comportamentos maliciosos
+\end{itemize}
+
+\subsubsection{Inteligência Artificial Distribuída}
+
+A convergência entre IA e sistemas distribuídos cria novas oportunidades e desafios:
+
+\begin{enumerate}
+    \item \textbf{Federated Learning}: Treinamento de modelos sem centralização de dados
+    \item \textbf{Sistemas auto-adaptativos}: Ajuste automático baseado em condições
+    \item \textbf{Otimização distribuída}: Algoritmos para maximização de eficiência global
+    \item \textbf{Detecção inteligente de anomalias}: Identificação proativa de problemas
+\end{enumerate}
+
+\subsection{Implicações para o Futuro}
+
+\subsubsection{Tendências Tecnológicas}
+
+As próximas gerações de sistemas distribuídos serão influenciadas por:
+
+\begin{itemize}
+    \item \textbf{Redes 5G/6G}: Ultra-baixa latência e alta densidade de dispositivos
+    \item \textbf{Computação quântica}: Novos paradigmas para criptografia e otimização
+    \item \textbf{Internet das Coisas (IoT)}: Bilhões de dispositivos interconectados
+    \item \textbf{Realidade aumentada distribuída}: Processamento em tempo real de dados espaciais
+\end{itemize}
+
+\subsubsection{Desafios de Sustentabilidade}
+
+O crescimento dos sistemas distribuídos levanta questões importantes sobre sustentabilidade:
+
+\begin{itemize}
+    \item \textbf{Consumo energético}: Otimização para redução do impacto ambiental
+    \item \textbf{Algoritmos verdes}: Protocolos que minimizam uso de recursos
+    \item \textbf{Economia circular}: Reutilização e reciclagem de componentes
+    \item \textbf{Eficiência de comunicação}: Redução de tráfego desnecessário
+\end{itemize}
 
 \section{Conclusões}
 
-Este trabalho apresentou uma análise abrangente dos fundamentos teóricos e práticos de redes e sistemas distribuídos. Os conceitos estudados demonstram a complexidade inerente à coordenação de múltiplos processos independentes e a importância de algoritmos bem fundamentados para garantir propriedades como consistência, disponibilidade e tolerância a falhas.
+\subsection{Síntese dos Resultados}
 
-Os algoritmos de consenso, protocolos de comunicação e arquiteturas distribuídas estudados formam a base tecnológica para sistemas modernos como computação em nuvem, blockchain e Internet das Coisas (IoT). O teorema CAP e os trabalhos de Lamport sobre ordenação de eventos continuam sendo referências fundamentais para o desenvolvimento de novos sistemas.
+Este trabalho apresentou uma análise abrangente dos fundamentos teóricos e aplicações práticas de redes e sistemas distribuídos. Os conceitos fundamentais estabelecidos por pioneiros como Lamport, com o algoritmo de relógios lógicos, e as limitações impostas pelo teorema CAP de Brewer, continuam sendo pilares essenciais para o desenvolvimento de sistemas modernos.
 
-As implementações práticas demonstraram que a escolha da arquitetura e dos algoritmos adequados depende das características específicas do domínio de aplicação. Sistemas que requerem alta disponibilidade podem optar por eventual consistency, enquanto sistemas bancários priorizam strong consistency.
+A evolução dos sistemas distribuídos demonstra uma progressão natural dos modelos cliente-servidor tradicionais para arquiteturas mais sofisticadas como microserviços, computação em borda e blockchain. Cada paradigma apresenta trade-offs específicos entre consistência, disponibilidade, escalabilidade e complexidade de implementação.
 
-Como trabalhos futuros, sugere-se a investigação de novos protocolos de consenso para ambientes com recursos limitados, como dispositivos IoT, e o desenvolvimento de frameworks que facilitem a implementação de sistemas distribuídos tolerantes a falhas bizantinas.
+\subsection{Contribuições do Estudo}
 
-Os fundamentos apresentados neste relatório fornecem base sólida para compreensão e desenvolvimento de sistemas distribuídos eficientes e confiáveis, essenciais para a infraestrutura tecnológica moderna.
+As principais contribuições deste trabalho incluem:
+
+\begin{enumerate}
+    \item \textbf{Sistematização conceitual}: Organização dos fundamentos teóricos de forma estruturada e acessível
+    \item \textbf{Análise comparativa}: Avaliação sistemática de diferentes arquiteturas e seus trade-offs
+    \item \textbf{Implementações práticas}: Algoritmos demonstrativos dos conceitos principais
+    \item \textbf{Perspectiva evolutiva}: Conexão entre fundamentos clássicos e tendências contemporâneas
+\end{enumerate}
+
+\subsection{Limitações e Trabalhos Futuros}
+
+\subsubsection{Limitações Identificadas}
+
+Este estudo apresenta algumas limitações que devem ser consideradas:
+
+\begin{itemize}
+    \item \textbf{Escopo temporal}: Foco em fundamentos estabelecidos, com menor ênfase em tecnologias emergentes
+    \item \textbf{Validação empírica}: Análises baseadas principalmente em literatura, com limitados experimentos práticos
+    \item \textbf{Domínios específicos}: Não aborda aplicações especializadas como sistemas críticos de tempo real
+    \item \textbf{Aspectos regulatórios}: Discussão limitada sobre implicações legais e de privacidade
+\end{itemize}
+
+\subsubsection{Direções de Pesquisa Futura}
+
+Baseado na análise realizada, identificam-se as seguintes direções promissoras para pesquisas futuras:
+
+\begin{enumerate}
+    \item \textbf{Protocolos sustentáveis}: Desenvolvimento de algoritmos que otimizem consumo energético
+    \item \textbf{IA para sistemas distribuídos}: Integração de técnicas de aprendizado para auto-otimização
+    \item \textbf{Segurança quântica}: Adaptação dos protocolos para resistir a ataques quânticos
+    \item \textbf{Sistemas híbridos}: Combinação eficiente de computação centralizada e distribuída
+    \item \textbf{Verificação formal}: Técnicas para garantir correção de sistemas complexos
+\end{enumerate}
+
+\subsection{Considerações Finais}
+
+Os sistemas distribuídos representam uma área em constante evolução, onde os fundamentos teóricos sólidos estabelecidos nas décadas passadas continuam sendo essenciais para navegar nos desafios contemporâneos. A crescente dependência da sociedade moderna destes sistemas torna imperativa a compreensão profunda de seus princípios e limitações.
+
+O teorema CAP e os algoritmos de consenso estudados não são meramente construções acadêmicas, mas ferramentas práticas essenciais para arquitetos e desenvolvedores de sistemas. A capacidade de fazer escolhas informadas entre consistência, disponibilidade e tolerância a partições determina o sucesso de implementações em escala real.
+
+A evolução para paradigmas como computação em borda, blockchain e inteligência artificial distribuída demonstra que os princípios fundamentais permanecem relevantes, mesmo quando aplicados em contextos inovadores. A interseção entre teoria e prática continua sendo o caminho para avanços significativos na área.
+
+Finalmente, é importante reconhecer que o desenvolvimento de sistemas distribuídos é uma disciplina multidisciplinar que requer não apenas competência técnica, mas também compreensão de aspectos econômicos, sociais e ambientais. O futuro da área dependerá da capacidade de balancear inovação tecnológica com responsabilidade social e sustentabilidade ambiental.
+
+Os fundamentos apresentados neste trabalho fornecem base sólida para profissionais e pesquisadores que buscam contribuir para o avanço desta área crítica da computação moderna, seja através de pesquisa acadêmica ou desenvolvimento de soluções práticas que beneficiem a sociedade como um todo.
