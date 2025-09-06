@@ -1,382 +1,208 @@
-
 \section{Introdução}
 
-\noindent \begin{minipage}[c]{0.6\textwidth}
-  \vspace {1cm}
-  \begin{description}
-    \item [Banana] Exemplo de mini página com figura e seus respectivos rotulos, para que sejam referenciados ao decorrer do texto.
-    \item [Maça] Veja que a Figura \ref{fig:place}, está reservando um espaço para adição de figuras, e o mesmo já esta referenciando seu autor e sua nomeclatura com o indice automatico.
-  \end{description}
-
-\end{minipage}
-\begin{minipage}[c]{0.4\textwidth}
-  \captionof{figure}{Placeholder.}
-  \includegraphics[width=\textwidth]{figure/placeholder.jpg}
-  \label{fig:place}
-  {\fontsize{10pt}{\baselineskip}\selectfont
-    Fonte: \citeonline{linux:2023}}
-\end{minipage}
-
-
-\section{Métodos}
-
-\begin{algorithm}[H]
-  \SetAlgoLined %APAGAR
-  \KwData{Entrada do algoritimo}
-  \KwIn{entrada} \
-   \KwResult{Resultado do codigo} \
-   \While{$x = 0$}{
-    Leia atual \;
-    \eIf{$n = 2$}{
-     vá para aproxima seção \;
-     a seção atual se torna esta \;
-     }{
-     VOlta ao inicio da seção \;
-      \Return{EXIT}
-    }
-   }
-   \caption{Nome do algoritimo em Portugues}
-   {\fontsize{10pt}{\baselineskip}\selectfont
-   Fonte: O autor (2022)}
-
-\end{algorithm}
-\subsection{tabelas}
-
-\begin{table}[H]
-\center
-  \caption{Criação do banco de dados}
-  \begin{tabular}{ | c | c  | c | c |}
-      \hline
-      \textbf{Nome} & \textbf{Cliente VIP} & EMAIL & TELEFONE \\
-          & (1-SIM / 0-Não)  &  &    \\
-      \hline
-          João & 1 & joao@email.com & 9999-1111, 8888-1111 \\
-      \hline
-          Marcos & 0 &  & 9999-2222 \\
-      \hline
-          Maria & 1 &maria@email.com & 9999-3333, 8888-3333, 9988-3000 \\
-      \hline
-  \end{tabular}
-  \label{tab:banco}
-  \flushleft % Alinha a esquerda a referencia
-  %\raggedleft
-
-  {\fontsize{10pt}{\baselineskip}\selectfont
-    Fonte: \citeonline{alguem2022nada}}
-\end{table}
-
-
-\section{Resultados}
-\lipsum[2-2]
-
-
-
-\subsection{Qr CODE}
-\par Exemplo de acição de QRcode.
-\qrcode {https://dicionario.priberam.org/}
-\qquad
-QrCode com 5cm:
-\quad
-\qrcode[height=5cm]{https://github.com/OgliariNatan/Template-UNOPAR}
-
-\subsection{Dicionário}
-
-\par Sugiro este dicionário, para dividas quanto a línga.
-\quad
-\qrcode {https://dicionario.priberam.org/}
-
-\subsection{Código externo no main.c}
-\lstinputlisting[language=c, caption={código externo}, label={cod:externo}]{main.c} %Busca os codigos na pasta /cod
-
-
-
-
-\subsection{Banco de dados} \label{Banco de dados}
-
-$\underline{{\color{Blue} }}{\color{red} \, \: \: \left ( \iint_{\widetilde{ \theta }}^{\phi } \right )}  $
-
-\lipsum[2-4]
-
-\subsection{Algoritmo}
-\par Um exemplo de adição de Algoritmo. \\
-
-\begin{algorithm}[H]
-  \caption{Calculo da potênciação.}
-  \label{ap1.2}
-  \Entrada{a, b, valor}
-  \Saida{Valor da potênciação}
-  Var \\
-  a, b, valor: inteiro; \Comment {Declara as variável do tipo inteiro.}
-
-  \Inicio{
-    escreva ("Você deverá entrar com dois valores, sendo que eles deverão ser
-    positivos e inteiros.") \Comment {Inicio do algoritmo.} \\
-    escreva ("") \\
-    escreva ("Entre com o valor de a:") \\
-    leia (a) \\
-    escreva("Entre com o valor de b:") \\
-    leia(b) \\
-    $valor \leftarrow 1$ \\
-    \While{$b \neq 0$}{
-      $valor  \leftarrow  a  \times valor$ \\
-      $b \leftarrow b-1$
-    }
-    escreval ("A Potência é:", valor)
-    }
-    %Deixar um espaço
-
-    \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: O autor (\ano)}
-\end{algorithm}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\par Aqui vai um exemplo de código em \LaTeX2e.
-
-\begin{algorithm} [H]
-	\caption{O nome do código}\label{alg:cap}
-
-	\begin{algorithmic} [H]
-		\Require $n \geq 0$	\Comment {n será maior ou igual a zero.}
-    \Require $x \geq 10$	\Comment {x será maior que 10.}
-		\Ensure $y = x^n$   	\Comment {adicionado.}
-    \Ensure $x = n $      \Comment{Idiota.}
-		\State $y \gets 1$
-		\State $X \gets x$
-		\State $N \gets n$
-%		\While{$N \neq 0$}
-%			\If{$N$ is even}
-%			 	   \State $X \gets X \times X$
-% 			   	\State $N \gets \frac{N}{2}$  \Comment{Aqui Vai o meu comentario}
-%			\ElsIf{$N = 0$ }
-%   				 \State $y \gets y \times X$
-%  			 	 \State $N \gets N - 1$
-%				\State $Xold \gets Xnew$
-%			\EndIf
-%		\EndWhile
-	\end{algorithmic}
-  %Deixar um espaço
-
-  \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: O autor (\ano)}
-\end{algorithm}
-
-\subsection{Sub Figuras}
-
-\begin{figure}[H] %Figuras da aula pratica 1.1
-  \center
-  \caption{Resultado da aula prática}
-  \subfigure[ Algoritmo.\label{fig:pri2}]{\includegraphics[scale=0.4]{figure/placeholder.jpg}}
-  \subfigure[Comportamento.\label{fig:seg2}]{\includegraphics[scale=.4]{figure/placeholder.jpg}}
-  %\caption{Resultado da atividade prática 1.2, \cite{oliveira_SO2009}}
-  \label{fig:ap1_cod_vigual1}
-  %Deixar um espaço
-
-  \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: \citeonline{oliveira_SO2009}}
-
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Seção que será apagada}
-
-Para referenciar utilize \cite{ninguem2022curioso}. Também pode ser citado integrada ao texto, de acordo com \citeonline{alguem2022nada}.
-
-Para inserir imagens adicione a figura no diretório \textit{/figure}
+Os sistemas distribuídos representam uma das áreas mais importantes da computação moderna, sendo definidos como um conjunto de computadores independentes que se apresentam aos usuários como um sistema único e coerente \cite{tanenbaum2016sistemas}. Estes sistemas são caracterizados pela ausência de memória compartilhada, comunicação através de mensagens e pela independência de falhas entre os componentes \cite{coulouris2013sistemas}.
 
 \begin{figure}[H]
 \centering
-\caption{Exemplo de uma imagem externa em arquivo .pdf}
-\includegraphics[width=1\textwidth]{figure/Welcome to CoCalc.pdf}
-\label{fig:imagem_massa}
-%Deixar um espaço
-
-\raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: O autor (\ano)}
-
+\captionof{figure}{Arquitetura de Sistema Distribuído.}
+\includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
+\label{fig:arquitetura_distribuida}
+{\fontsize{10pt}{\baselineskip}\selectfont
+  Fonte: Adaptado de \citeonline{tanenbaum2016sistemas}}
 \end{figure}
 
-\par Estou usando \href {https://cocalc.com/} {CoCal}
+A evolução das redes de computadores possibilitou o desenvolvimento de sistemas distribuídos cada vez mais complexos e eficientes. Segundo \citeonline{kurose2021redes}, as redes modernas seguem uma abordagem em camadas que facilita a implementação e manutenção de protocolos de comunicação. O modelo TCP/IP, especificado inicialmente na RFC 793 \cite{rfc793:1981}, continua sendo a base fundamental para a comunicação em sistemas distribuídos.
 
-E para referenciar a figura \ref{fig:imagem_massa} utilize dessa forma.
+Um dos principais desafios em sistemas distribuídos é o problema da sincronização e ordenação de eventos. \citeonline{lamport1978time} demonstrou que, na ausência de relógios perfeitamente sincronizados, é necessário estabelecer uma ordem lógica dos eventos através de algoritmos específicos. Este trabalho seminal estabeleceu as bases teóricas para muitos protocolos de consenso utilizados atualmente.
 
-\begin{equation}
-  a + b = c \label{1}
-  $$ $$ %usado para pular linha
-  \sqrt{x} + \sqrt{\smash[b]{y}} + \sqrt{z}
-\end{equation}
+O teorema CAP, proposto por \citeonline{cap2000theorem}, estabelece que em sistemas distribuídos é impossível garantir simultaneamente consistência (Consistency), disponibilidade (Availability) e tolerância a partições (Partition tolerance). Este teorema fundamental influencia diretamente as decisões de projeto em sistemas distribuídos modernos.
+
+Este relatório apresenta uma análise detalhada dos principais conceitos, algoritmos e tecnologias empregadas em redes e sistemas distribuídos, fundamentando-se em literatura acadêmica reconhecida e exemplos práticos de implementação.
+
+\section{Fundamentos Teóricos e Metodologia}
+
+\subsection{Algoritmos de Consenso Distribuído}
+
+Os algoritmos de consenso são fundamentais para garantir a consistência em sistemas distribuídos. O algoritmo de Lamport para ordenação lógica de eventos é um dos pilares teóricos desta área.
+
+\begin{algorithm}[H]
+  \SetAlgoLined
+  \KwData{Conjunto de processos $P = \{p_1, p_2, ..., p_n\}$}
+  \KwIn{Evento local $e_i$ no processo $p_i$}
+  \KwResult{Timestamp lógico ordenado}
+  
+  \Begin{
+    Inicializar $LC_i = 0$ para cada processo $p_i$\;
+    
+    \For{cada evento local $e$ em $p_i$}{
+      $LC_i = LC_i + 1$\;
+      timestamp$(e) = LC_i$\;
+    }
+    
+    \If{$p_i$ envia mensagem $m$ para $p_j$}{
+      $LC_i = LC_i + 1$\;
+      timestamp$(m) = LC_i$\;
+      enviar $(m, LC_i)$ para $p_j$\;
+    }
+    
+    \If{$p_j$ recebe mensagem $(m, LC_k)$ de $p_i$}{
+      $LC_j = \max(LC_j, LC_k) + 1$\;
+      processar mensagem $m$\;
+    }
+  }
+  
+  \caption{Algoritmo de Relógios Lógicos de Lamport}
+  {\fontsize{10pt}{\baselineskip}\selectfont
+    Fonte: Adaptado de \citeonline{lamport1978time}}
+\end{algorithm}
+
+\subsection{Protocolos de Comunicação em Redes}
+
+A pilha de protocolos TCP/IP fornece a base para comunicação confiável em sistemas distribuídos. A Tabela~\ref{tab:protocolos} apresenta os principais protocolos utilizados em cada camada.
+
+\begin{table}[H]
+\centering
+  \caption{Principais Protocolos da Pilha TCP/IP}
+  \begin{tabular}{|l|l|l|l|}
+      \hline
+      \textbf{Camada} & \textbf{Protocolo} & \textbf{Função} & \textbf{RFC} \\
+      \hline
+      Aplicação & HTTP/HTTPS & Transferência de hipertexto & RFC 2616 \\
+      \hline
+      Aplicação & FTP & Transferência de arquivos & RFC 959 \\
+      \hline
+      Transporte & TCP & Transporte confiável & RFC 793 \\
+      \hline
+      Transporte & UDP & Transporte não confiável & RFC 768 \\
+      \hline
+      Internet & IP & Roteamento de pacotes & RFC 791 \\
+      \hline
+      Enlace & Ethernet & Acesso ao meio físico & IEEE 802.3 \\
+      \hline
+  \end{tabular}
+  \label{tab:protocolos}
+  \flushleft % Alinha à esquerda a referência
+
+  {\fontsize{10pt}{\baselineskip}\selectfont
+    Fonte: Adaptado de \citeonline{kurose2021redes}}
+\end{table}
 
 
-\par Exemplo de incerção de formula \eqref{1},
+\section{Análise de Sistemas Distribuídos}
 
-\begin{equation}
-S = \left\{
-\begin{aligned}
-  a + b     &= 4\\
-  a \cdot b &= 4
-\end{aligned}
-\right.
-$$ $$% Usado para pular linha [não recomendado]
-\sum_{n<k,\;\text{$n$ odd}} nE_n
- \label{3}
-\end{equation}
+\subsection{Características e Propriedades}
 
-Aqui é um exemplo de rodapé. \footnote{Um exemplo de rodapé}
+Os sistemas distribuídos modernos devem atender a diversos requisitos não funcionais para garantir sua eficácia. As principais características incluem escalabilidade, disponibilidade, tolerância a falhas e transparência \cite{coulouris2013sistemas}.
 
-\begin{equation}
-\int_{-L}^{L} sen \frac{m \pi x}{2}\,sen \frac{n \pi x}{2}\,dx =
-\left \{
-\begin{array}{cc}
-0, & m \neq n \\
-1, & m = n \\
-\end{array}
-\right.
-\end{equation}
+A escalabilidade refere-se à capacidade do sistema de manter seu desempenho quando o número de usuários, recursos ou a carga de trabalho aumenta. Existem três tipos principais de escalabilidade: escalabilidade de tamanho, geográfica e administrativa \cite{tanenbaum2016sistemas}.
 
+\subsection{Modelos de Arquitetura}
 
-\subsection{Sub itens}
+Os sistemas distribuídos podem seguir diferentes modelos arquiteturais, cada um com suas vantagens e desvantagens específicas:
 
-\begin{enumerate}[label=\Roman{*}, ref=(\roman{*})]
-  \item fsfsdf
-  \item kugfhiuh
+\begin{enumerate}
+    \item \textbf{Cliente-Servidor}: Modelo tradicional onde clientes fazem requisições a servidores
+    \item \textbf{Peer-to-Peer (P2P)}: Todos os nós podem atuar como cliente e servidor
+    \item \textbf{Arquitetura em Camadas}: Organização hierárquica de serviços
+    \item \textbf{Microserviços}: Decomposição de aplicações em serviços pequenos e independentes
 \end{enumerate}
 
-\begin{asparaenum}
-\item Anterior ... \cite{ninguem2022curioso}
-\item Próximo ... \label{pl1}
-\end{asparaenum}
+\subsection{Implementação de Comunicação Distribuída}
 
-\subsection{Plotação de gráficos}
+O exemplo a seguir demonstra a implementação básica de um algoritmo de eleição em sistemas distribuídos:
 
-\begin{tikzpicture}
+\subsection{Algoritmo de Eleição em Anel}
 
-  \begin{axis}[
-    title = Gráfico,
-    xlabel = $x$,
-    ylabel = {$f(x) = x^2 - x +4$}
-    ]
-    \addplot[color = red] {x^2 - x +4};
-    \addlegendentry{Teste de legenda.}
+Um exemplo prático de algoritmo distribuído é o algoritmo de eleição em anel, usado para eleger um coordenador em sistemas distribuídos.
 
-  \end{axis}
-\end{tikzpicture}
-
-\subsection{Sub exemplo 3d}
-\begin{tikzpicture}
-\begin{axis}
-    [
-    view={60}{30},
-    ]
-\addplot3[
-    title = gráfico 3d,
-    domain=0:5*pi,
-    samples = 60,
-    samples y=0,
-]
-[color=green]({sin(deg(x))},
-{cos(deg(x))},
-{x});
-\addlegendentry{Teste de legenda.}
-\end{axis}
-\end{tikzpicture}
-
-\subsection{ Outro exemplo}
-
-\begin{tikzpicture}
-\begin{axis}[
-    title = título do gráfco,
-    axis lines = left,
-    xlabel = \(x\),
-    ylabel = {\(f(x)\)},
-]
-%define a parabula vermelha
-\addplot [
-    mark=*,
-    domain=-10:10,
-    samples=100,
-    color=red,
-]
-{x^2 - 2*x - 1};
-\addlegendentry{\(x^2 - 2x - 1\)}
-%define a parabula azul
-\addplot [
-    domain=-10:10,
-    samples=100,
-    color=blue,
-    ]
-    {x^2 + 2*x + 1};
-\addlegendentry{\(x^2 + 2x + 1\)}
-
-\end{axis}
-\end{tikzpicture}
-
-
-\subsubsection{Mais um exemplo}
-
-
-
-
-\begin{figure}[H]
-    \centering
-    \caption{Gráfico com arquivo externo}
-  \begin{tikzpicture}
-    \begin{axis}[title = Título do gráfco, xlabel = {$x$}, ylabel = {$y$}, label = grafico]
-      \addplot [red] table [x=a, y=c, col sep=comma] {cod/data.csv};
-      \addplot [blue] table [x=a, y=b, col sep=comma] {cod/file.csv};
-      \addlegendentry{{$x \exp(-x^2-y^2)$}}
-    \end{axis}
-  \end{tikzpicture}
-  %Deixar um espaço
-
-  \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: O autor (\ano)}
-\end{figure}
-
-
-
-\section{Conclusões}
-
-\begin{algorithm}
-\DontPrintSemicolon
-\KwData{Ponteiros randomicos.} \Comment{Testando meu comentario} \\
-\KwResult{Ordenação de vetores, e concatenação de vetores.}
-
-\Begin{ \Comment{Inicio do meu algoritimo.} \\
-$V \longleftarrow X$\;
-$S \longleftarrow \emptyset$\;
-\For{$x\in X$}{
-  $NbSuccInS(x) \longleftarrow 0$\;
-  $NbPredInMin(x) \longleftarrow 0$\;
-  $NbPredNotInMin(x) \longleftarrow |ImPred(x)|$\;
-}
-\For{$x \in X$}{
-  \If{$ponteiroValido() = 1$ {\bf and} $filaVazia() = 1$}{
-    $SOMA4()$}
+\begin{algorithm}[H]
+  \caption{Algoritmo de Eleição em Anel}
+  \label{alg:eleicao_anel}
+  \Entrada{Conjunto de processos $P = \{p_0, p_1, \ldots, p_{n-1}\}$ organizados em anel}
+  \Saida{Eleição de um coordenador}
+  
+  \Inicio{
+    \Comment{Quando um processo detecta falha do coordenador} \\
+    \If{processo $p_i$ detecta falha do coordenador}{
+      enviar mensagem ELEIÇÃO($p_i$) para próximo processo ativo no anel\;
+      $participando \leftarrow verdadeiro$\;
     }
-\nl\While{$S \neq \emptyset$}{\label{InRes1}
-\nlset{REM} remove $x$ from the list of $T$ of maximal index\;\label{InResR}
-\lnl{InRes2}\While{$|S \cap ImSucc(x)| \neq |S|$}{
-\For{$ y \in S-ImSucc(x)$}{
-\{ remove from $V$ all the arcs $zy$ : \}\;
-\For{$z \in ImPred(y) \cap Min$}{
-remove the arc $zy$ from $V$\;
-$NbSuccInS(z) \longleftarrow NbSuccInS(z) - 1$\;
-move $z$ in $T$ to the list preceding its present list\;
-\{i.e. If $z \in T[k]$, move $z$ from $T[k]$ to
-$T[k-1]$\}\;
-}
-$NbPredInMin(y) \longleftarrow 0$\;
-$NbPredNotInMin(y) \longleftarrow 0$\;
-$S \longleftarrow S - \{y\}$\;
-$AppendToMin(y)$\;
-}
-}
-$RemoveFromMin(x)$\;
-}
-}
-\caption{Exemplo de algoritimo}
-%Deixar um espaço
+    
+    \Comment{Ao receber mensagem de eleição} \\
+    \If{$p_j$ recebe ELEIÇÃO($lista$)}{
+      \If{$p_j \notin lista$}{
+        adicionar $p_j$ à $lista$\;
+        enviar ELEIÇÃO($lista$) para próximo processo no anel\;
+        $participando \leftarrow verdadeiro$\;
+      }
+      \Else{
+        \Comment{A mensagem deu volta completa no anel} \\
+        $coordenador \leftarrow \max(lista)$\;
+        enviar COORDENADOR($coordenador$) para próximo processo\;
+      }
+    }
+    
+    \Comment{Ao receber mensagem de coordenador} \\
+    \If{$p_k$ recebe COORDENADOR($coord$)}{
+      $coordenador \leftarrow coord$\;
+      $participando \leftarrow falso$\;
+      \If{$p_k \neq coord$}{
+        enviar COORDENADOR($coord$) para próximo processo\;
+      }
+    }
+  }
 
-\raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: O autor (\ano)}
+  \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: Adaptado de \citeonline{tanenbaum2016sistemas}}
 \end{algorithm}
 
 
-  %$X \xLongleftarrow[\text{NATAN}]{\text{OGLIARI}} Y $ %COM TEXTO
-	% $\uparrow$ %Seta para Cima
-	%$\overleftarrow{NATAN}$
+\subsection{Análise de Desempenho}
+
+A análise de desempenho em sistemas distribuídos envolve métricas como latência, throughput, disponibilidade e escalabilidade. A Figura~\ref{fig:comparacao_arquiteturas} apresenta uma comparação entre diferentes arquiteturas distribuídas.
+
+\begin{figure}[H]
+  \centering
+  \caption{Comparação de Arquiteturas Distribuídas}
+  \subfigure[Cliente-Servidor.\label{fig:cliente_servidor}]{\includegraphics[scale=0.4]{figure/cliente-server.png}}
+  \subfigure[Peer-to-Peer.\label{fig:p2p}]{\includegraphics[scale=.4]{figure/peer-to-peer.png}}
+  \label{fig:comparacao_arquiteturas}
+
+  \raggedright{\fontsize{10pt}{\baselineskip}\selectfont Fonte: Adaptado de \citeonline{coulouris2013sistemas}}
+\end{figure}
+
+\subsection{Protocolos de Consenso}
+
+Os protocolos de consenso são essenciais para manter a consistência em sistemas distribuídos. Algoritmos como Paxos, Raft e PBFT (Practical Byzantine Fault Tolerance) são amplamente utilizados em sistemas reais \cite{lamport1978time}. Cada protocolo apresenta diferentes garantias de segurança e vivacidade, adequadas para cenários específicos.
+
+
+
+\section{Discussão e Considerações}
+
+\subsection{Desafios Atuais}
+
+Os sistemas distribuídos enfrentam diversos desafios que continuam sendo objeto de pesquisa ativa. Entre os principais desafios, destacam-se:
+
+\begin{itemize}
+    \item \textbf{Gerenciamento de Estado}: Manter consistência entre múltiplos nós
+    \item \textbf{Detecção de Falhas}: Identificar e recuperar de falhas de rede e hardware
+    \item \textbf{Partições de Rede}: Lidar com a separação temporária de nós
+    \item \textbf{Escalabilidade}: Manter desempenho com crescimento do sistema
+\end{itemize}
+
+\subsection{Tendências Futuras}
+
+As tendências emergentes em sistemas distribuídos incluem computação em borda (edge computing), blockchain, sistemas auto-adaptativos e inteligência artificial distribuída. Estas tecnologias promovem maior autonomia e eficiência dos sistemas \cite{coulouris2013sistemas}.
+
+A evolução das redes 5G e 6G também impactará significativamente o design de sistemas distribuídos, possibilitando latências ultra-baixas e maior largura de banda \cite{cisco2019networking}.
+
+\section{Conclusões}
+
+Este trabalho apresentou uma análise abrangente dos fundamentos teóricos e práticos de redes e sistemas distribuídos. Os conceitos estudados demonstram a complexidade inerente à coordenação de múltiplos processos independentes e a importância de algoritmos bem fundamentados para garantir propriedades como consistência, disponibilidade e tolerância a falhas.
+
+Os algoritmos de consenso, protocolos de comunicação e arquiteturas distribuídas estudados formam a base tecnológica para sistemas modernos como computação em nuvem, blockchain e Internet das Coisas (IoT). O teorema CAP e os trabalhos de Lamport sobre ordenação de eventos continuam sendo referências fundamentais para o desenvolvimento de novos sistemas.
+
+As implementações práticas demonstraram que a escolha da arquitetura e dos algoritmos adequados depende das características específicas do domínio de aplicação. Sistemas que requerem alta disponibilidade podem optar por eventual consistency, enquanto sistemas bancários priorizam strong consistency.
+
+Como trabalhos futuros, sugere-se a investigação de novos protocolos de consenso para ambientes com recursos limitados, como dispositivos IoT, e o desenvolvimento de frameworks que facilitem a implementação de sistemas distribuídos tolerantes a falhas bizantinas.
+
+Os fundamentos apresentados neste relatório fornecem base sólida para compreensão e desenvolvimento de sistemas distribuídos eficientes e confiáveis, essenciais para a infraestrutura tecnológica moderna.
