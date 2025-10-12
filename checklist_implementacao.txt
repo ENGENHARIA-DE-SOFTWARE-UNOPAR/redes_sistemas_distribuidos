@@ -1,0 +1,110 @@
+CHECKLIST DE IMPLEMENTAÇÃO - REDE SUPER TECH
+===========================================
+
+□ 1. INSTALAÇÃO E PREPARAÇÃO
+   □ Instalar Cisco Packet Tracer 8.2.1 ou superior
+   □ Verificar requisitos de sistema
+   □ Criar novo projeto de rede
+   □ Definir área de trabalho para topologia
+
+□ 2. PLANEJAMENTO DE ENDEREÇAMENTO
+   □ Calcular sub-redes /27 para 4 departamentos
+   □ Definir faixas de IP para cada departamento:
+     - Engenharia: 192.168.1.0/27
+     - Compras: 192.168.1.32/27
+     - TI Interno: 192.168.1.64/27
+     - Infraestrutura: 192.168.1.96/27
+   □ Planejar VLANs (IDs 10-11, 20-21, 30-31, 40-41)
+
+□ 3. CONFIGURAÇÃO DE HARDWARE NO PACKET TRACER
+   □ Adicionar switch central (Catalyst 2960)
+   □ Adicionar 4 switches departamentais (2950-24)
+   □ Conectar switches em topologia estrela
+   □ Adicionar 80 PCs (20 por departamento)
+   □ Adicionar 8 servidores (2 por departamento)
+   □ Adicionar 8 impressoras (2 por departamento)
+
+□ 4. CONFIGURAÇÃO DE SWITCHES
+   □ Engenharia:
+     - Criar VLANs 10 e 11
+     - Configurar portas 1-12 para VLAN 10
+     - Configurar portas 13-24 para VLAN 11
+   □ Compras:
+     - Criar VLANs 20 e 21
+     - Configurar portas 1-12 para VLAN 20
+     - Configurar portas 13-24 para VLAN 21
+   □ TI Interno:
+     - Criar VLANs 30 e 31
+     - Configurar portas 1-12 para VLAN 30
+     - Configurar portas 13-24 para VLAN 31
+   □ Infraestrutura:
+     - Criar VLANs 40 e 41
+     - Configurar portas 1-12 para VLAN 40
+     - Configurar portas 13-24 para VLAN 41
+
+□ 5. CONFIGURAÇÃO DE ENDEREÇAMENTO IP
+   □ Departamentos com IP Estático (Engenharia e TI Interno):
+     - Configurar IPs manualmente em cada dispositivo
+     - Configurar gateway padrão
+     - Configurar DNS (8.8.8.8)
+   □ Departamentos com IP Dinâmico (Compras e Infraestrutura):
+     - Configurar servidor DHCP
+     - Definir pools de endereços
+     - Configurar clientes para obter IP automaticamente
+
+□ 6. TESTES DE CONECTIVIDADE
+   □ Teste intra-VLAN:
+     - Ping entre dispositivos da mesma VLAN
+     - Verificar acesso a impressoras locais
+     - Testar acesso a servidores locais
+   □ Teste inter-VLAN:
+     - Ping entre VLANs do mesmo departamento
+   □ Teste inter-departamental:
+     - Ping entre departamentos diferentes
+     - Verificar roteamento entre sub-redes
+
+□ 7. DOCUMENTAÇÃO E VALIDAÇÃO
+   □ Capturar screenshots da topologia completa
+   □ Documentar configurações de cada switch
+   □ Registrar tabela de endereçamento IP
+   □ Salvar arquivo do Packet Tracer
+   □ Criar relatório técnico
+
+□ 8. VERIFICAÇÕES FINAIS
+   □ Todos os 96 dispositivos funcionando
+   □ Conectividade 100% dentro das VLANs
+   □ Isolamento adequado entre VLANs
+   □ DHCP funcionando nos departamentos apropriados
+   □ IPs estáticos aplicados corretamente
+   □ Documentação completa
+
+COMANDOS ESSENCIAIS PARA CONFIGURAÇÃO
+=====================================
+
+Switch Configuration (exemplo para Engenharia):
+enable
+configure terminal
+vlan 10
+name Engenharia_VLAN1
+vlan 11
+name Engenharia_VLAN2
+interface range fastethernet 0/1-12
+switchport mode access
+switchport access vlan 10
+interface range fastethernet 0/13-24
+switchport mode access
+switchport access vlan 11
+exit
+copy running-config startup-config
+
+DHCP Configuration (exemplo para Compras):
+ip dhcp pool COMPRAS_VLAN20
+network 192.168.1.32 255.255.255.224
+default-router 192.168.1.33
+dns-server 8.8.8.8
+
+Verificação:
+show vlan brief
+show running-config
+show ip interface brief
+ping [IP_destino]
