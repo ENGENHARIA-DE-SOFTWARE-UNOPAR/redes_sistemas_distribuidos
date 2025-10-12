@@ -21,6 +21,7 @@ Os sistemas distribuídos apresentam características distintivas que os diferen
 \centering
 \captionof{figure}{Arquitetura típica de um sistema distribuído mostrando múltiplos nós conectados via rede.}
 \includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
+
 \label{fig:arquitetura_distribuida}
 {\fontsize{10pt}{\baselineskip}\selectfont
   Fonte: Elaborado pelo autor baseado em \citeonline{tanenbaum2016sistemas}}
@@ -132,6 +133,7 @@ O algoritmo de relógios lógicos, proposto por \citeonline{lamport1978time}, re
 }
 
 \caption{Algoritmo de Relógios Lógicos de Lamport}
+
 \label{alg:lamport_clocks}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Adaptado de \citeonline{lamport1978time}}
@@ -261,6 +263,7 @@ A implementação de consenso em sistemas distribuídos requer algoritmos espec�
 }
 
 \caption{Protocolo de Consenso por Maioria Simples}
+
 \label{alg:majority_consensus}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor baseado em \citeonline{coulouris2013sistemas}}
@@ -303,6 +306,7 @@ Blockchain & Muito Alta & Baixa & Limitada & Muito Alta \\
 \hline
 \end{tabular}
 \label{tab:metricas_comparacao}
+
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor baseado em \citeonline{coulouris2013sistemas}}
 \end{table}
@@ -367,6 +371,7 @@ O algoritmo a seguir demonstra um protocolo básico para replicação de estado 
 }
 
 \caption{Protocolo de Replicação de Estado por Consenso}
+
 \label{alg:state_replication}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Adaptado de \citeonline{coulouris2013sistemas}}
@@ -406,6 +411,7 @@ Envolve a capacidade de integrar domínios administrativos diferentes mantendo a
 \centering
 \captionof{figure}{Gráfico comparativo de escalabilidade entre diferentes arquiteturas distribuídas}
 \includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
+
 \label{fig:escalabilidade_comparacao}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor}
@@ -526,7 +532,9 @@ Custo de comunicação & Alto & Baixo \\
 Processamento local & Limitado & Extensivo \\
 \hline
 \end{tabular}
+
 \label{tab:cloud_vs_edge}
+
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Adaptado de \citeonline{cisco2019networking}}
 \end{table}
@@ -611,21 +619,23 @@ A Tabela~\ref{tab:subredes_supertech} apresenta a distribuição das sub-redes p
 
 \begin{table}[H]
 \centering
-\caption{Segmentação de sub-redes para os departamentos da Super Tech}
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\textbf{Departamento} & \textbf{Sub-rede} & \textbf{Primeiro IP} & \textbf{Último IP} & \textbf{Broadcast} \\
-\hline
-Engenharia & 192.168.1.0/27 & 192.168.1.1 & 192.168.1.30 & 192.168.1.31 \\
-\hline
-Compras & 192.168.1.32/27 & 192.168.1.33 & 192.168.1.62 & 192.168.1.63 \\
-\hline
-TI Interno & 192.168.1.64/27 & 192.168.1.65 & 192.168.1.94 & 192.168.1.95 \\
-\hline
-Infraestrutura & 192.168.1.96/27 & 192.168.1.97 & 192.168.1.126 & 192.168.1.127 \\
-\hline
-\end{tabular}
+    \caption{Segmentação de sub-redes para os departamentos da Super Tech}
+    \begin{tabular}{|l|c|c|c|c|}
+    \hline
+    \textbf{Departamento} & \textbf{Sub-rede} & \textbf{Primeiro IP} & \textbf{Último IP} & \textbf{Broadcast} \\
+    \hline
+    Engenharia & 192.168.1.0/27 & 192.168.1.1 & 192.168.1.30 & 192.168.1.31 \\
+    \hline
+    Compras & 192.168.1.32/27 & 192.168.1.33 & 192.168.1.62 & 192.168.1.63 \\
+    \hline
+    TI Interno & 192.168.1.64/27 & 192.168.1.65 & 192.168.1.94 & 192.168.1.95 \\
+    \hline
+    Infraestrutura & 192.168.1.96/27 & 192.168.1.97 & 192.168.1.126 & 192.168.1.127 \\
+    \hline
+    \end{tabular}
+
 \label{tab:subredes_supertech}
+
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor}
 \end{table}
