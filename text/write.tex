@@ -631,6 +631,8 @@ A Tabela~\ref{tab:subredes_supertech} apresenta a distribuição das sub-redes p
 Fonte: Elaborado pelo autor}
 \end{table}
 
+\par Vale ressaltar que nesta configuração é possível a implementação de até 8 sub-redes, cada uma com até 30 hosts utilizáveis, atendendo plenamente às necessidades atuais da Super Tech e permitindo expansão futura.
+
 \subsection{Metodologia de Implementação}
 
 \subsubsection{Ferramentas Utilizadas}
@@ -699,26 +701,6 @@ A Tabela \ref{tab:vlans_configuracao} detalha a configuração específica de ca
 Fonte: Elaborado pelo autor}
 \end{table}
 
-\subsubsection{Comandos de Configuração das VLANs}
-
-Os comandos utilizados para configuração das VLANs no switch Cisco 2950-24, seguindo as práticas recomendadas por \citeonline{odom2019ccna}, incluem:
-
-\begin{verbatim}
-# Configuração para o Departamento de Engenharia
-enable
-configure terminal
-vlan 10
-name Engenharia_VLAN1
-vlan 11
-name Engenharia_VLAN2
-interface range fastethernet 0/1-12
-switchport mode access
-switchport access vlan 10
-interface range fastethernet 0/13-24
-switchport mode access
-switchport access vlan 11
-exit
-\end{verbatim}
 
 \subsection{Implementação da Topologia em Estrela}
 
@@ -769,11 +751,13 @@ A implementação utilizou os seguintes equipamentos no Cisco Packet Tracer:
 
 \begin{itemize}
     \item \textbf{Switch central}: Cisco Catalyst 2960 (24 portas)
-    \item \textbf{Switches departamentais}: 4x Cisco Catalyst 2950-24
+    \item \textbf{Switches por departamento}: 3x Cisco Catalyst 2950-24 = 12 switches
     \item \textbf{Estações de trabalho}: 80x Generic PC
     \item \textbf{Servidores}: 8x Generic Server
     \item \textbf{Impressoras}: 8x Generic Printer
 \end{itemize}
+
+\par A estrutura física foi organizada para refletir a topologia lógica, garantindo que cada departamento estivesse devidamente segmentado e conectado ao switch central, conforme ilustrado na Figura~\ref{fig:topologia_supertech}. O Switch 2960-24 possui 24 portas o que seria insuficiente para conectar as duas VLANs de cada departamento (12 + 12 + 2 para conexõa entre departamento = 26 portas), por isso para cada departamento foi utilizado dois Switches 2950-24.
 
 \subsection{Configuração de Endereçamento IP}
 
@@ -801,6 +785,7 @@ Os departamentos de Engenharia e TI Interno receberam configuração de IP está
 & Impressora & 192.168.1.77 & 192.168.1.92 \\
 \hline
 \end{tabular}
+
 \label{tab:ips_estaticos}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor}
@@ -811,10 +796,10 @@ Fonte: Elaborado pelo autor}
 Para os departamentos de Compras e Infraestrutura, foi implementado servidor DHCP com as seguintes configurações:
 
 \begin{itemize}
-    \item \textbf{Pool Compras VLAN 20}: 192.168.1.34-192.168.1.46
-    \item \textbf{Pool Compras VLAN 21}: 192.168.1.49-192.168.1.61
-    \item \textbf{Pool Infraestrutura VLAN 40}: 192.168.1.98-192.168.1.110
-    \item \textbf{Pool Infraestrutura VLAN 41}: 192.168.1.113-192.168.1.125
+    \item \textbf{Compras VLAN 20}: 192.168.1.34-192.168.1.46
+    \item \textbf{Compras VLAN 21}: 192.168.1.49-192.168.1.61
+    \item \textbf{Infraestrutura VLAN 40}: 192.168.1.98-192.168.1.110
+    \item \textbf{Infraestrutura VLAN 41}: 192.168.1.113-192.168.1.125
 \end{itemize}
 
 \subsection{Resultados e Validação}
@@ -833,7 +818,8 @@ Foram realizados testes de conectividade utilizando o comando ping para validar:
 \begin{figure}[H]
 \centering
 \captionof{figure}{Resultado dos testes de conectividade no Packet Tracer}
-\includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
+\includegraphics[width=0.8\textwidth]{figure/conectividade.png}
+
 \label{fig:testes_conectividade}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Captura de tela do Cisco Packet Tracer - Elaborado pelo autor}
