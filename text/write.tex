@@ -20,7 +20,7 @@ Os sistemas distribuídos apresentam características distintivas que os diferen
 \begin{figure}[H]
 \centering
 \captionof{figure}{Arquitetura típica de um sistema distribuído mostrando múltiplos nós conectados via rede.}
-\includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
+\includegraphics[width=0.8\textwidth]{figure/sistema-distribuido.png}
 
 \label{fig:arquitetura_distribuida}
 {\fontsize{10pt}{\baselineskip}\selectfont
@@ -79,6 +79,7 @@ Internet & IPv4/IPv6 & Roteamento de pacotes & RFC~791, RFC~8200 \\
 Enlace & Ethernet & Acesso ao meio físico & IEEE~802.3 \\
 \hline
 \end{tabular}
+
 \label{tab:protocolos_tcpip}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Adaptado de \citeonline{kurose2021redes}}
@@ -146,6 +147,8 @@ Este algoritmo garante que se um evento $a$ acontece antes de um evento $b$ (not
 O algoritmo de eleição em anel é utilizado para selecionar um coordenador entre os processos ativos de um sistema distribuído organizado em topologia circular.
 
 \begin{algorithm}[H]
+\caption{Algoritmo de Eleição em Anel}
+\label{alg:ring_election}
 \SetAlgoLined
 \KwData{Processos $P = \{p_0, p_1, \ldots, p_{n-1}\}$ organizados em anel}
 \KwResult{Eleição de um processo coordenador}
@@ -182,8 +185,7 @@ O algoritmo de eleição em anel é utilizado para selecionar um coordenador ent
     }
 }
 
-\caption{Algoritmo de Eleição em Anel}
-\label{alg:ring_election}
+
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Adaptado de \citeonline{tanenbaum2016sistemas}}
 \end{algorithm}
@@ -229,44 +231,43 @@ Esta limitação fundamental força os projetistas a escolherem entre sistemas C
 A implementação de consenso em sistemas distribuídos requer algoritmos específicos que garantam acordo entre os nós mesmo na presença de falhas. O exemplo a seguir demonstra um protocolo básico de consenso por maioria:
 
 \begin{algorithm}[H]
-\SetAlgoLined
-\KwData{Conjunto de $n$ processos, valor inicial $v_i$ para cada processo $p_i$}
-\KwResult{Consenso sobre um valor único}
+    \caption{Protocolo de Consenso por Maioria Simples}
+    \label{alg:majority_consensus}
+    \SetAlgoLined
+    \KwData{Conjunto de $n$ processos, valor inicial $v_i$ para cada processo $p_i$}
+    \KwResult{Consenso sobre um valor único}
 
-\Begin{
-    \Comment{Fase 1: Coleta de propostas}
-    \For{cada processo $p_i$}{
-        broadcast PROPOSTA($v_i$) para todos os processos\;
-        receber PROPOSTA($v_j$) de todos os processos $p_j$\;
-    }
-    
-    \Comment{Fase 2: Decisão por maioria}
-    \For{cada processo $p_i$}{
-        contar ocorrências de cada valor recebido\;
-        $valor\_consenso \leftarrow$ valor com maior número de ocorrências\;
-        
-        \If{múltiplos valores têm mesma frequência máxima}{
-            $valor\_consenso \leftarrow \min($valores\_empatados$)$\;
+    \Begin{
+        \Comment{Fase 1: Coleta de propostas}
+        \For{cada processo $p_i$}{
+            broadcast PROPOSTA($v_i$) para todos os processos\;
+            receber PROPOSTA($v_j$) de todos os processos $p_j$\;
         }
         
-        broadcast DECISÃO($valor\_consenso$)\;
+        \Comment{Fase 2: Decisão por maioria}
+        \For{cada processo $p_i$}{
+            contar ocorrências de cada valor recebido\;
+            $valor\_consenso \leftarrow$ valor com maior número de ocorrências\;
+            
+            \If{múltiplos valores têm mesma frequência máxima}{
+                $valor\_consenso \leftarrow \min($valores\_empatados$)$\;
+            }
+            
+            broadcast DECISÃO($valor\_consenso$)\;
+        }
+        
+        \Comment{Fase 3: Confirmação}
+        aguardar DECISÃO de maioria dos processos\;
+        \If{todas as decisões são idênticas}{
+            confirmar $valor\_consenso$\;
+        }
+        \Else{
+            reiniciar protocolo\;
+        }
     }
-    
-    \Comment{Fase 3: Confirmação}
-    aguardar DECISÃO de maioria dos processos\;
-    \If{todas as decisões são idênticas}{
-        confirmar $valor\_consenso$\;
-    }
-    \Else{
-        reiniciar protocolo\;
-    }
-}
 
-\caption{Protocolo de Consenso por Maioria Simples}
-
-\label{alg:majority_consensus}
-{\fontsize{10pt}{\baselineskip}\selectfont
-Fonte: Elaborado pelo autor baseado em \citeonline{coulouris2013sistemas}}
+    {\fontsize{10pt}{\baselineskip}\selectfont
+    Fonte: Elaborado pelo autor baseado em \citeonline{coulouris2013sistemas}}
 \end{algorithm}
 
 
@@ -406,16 +407,6 @@ Relaciona-se com a capacidade de operar eficientemente quando os nós estão geo
 \subsubsection{Escalabilidade Administrativa}
 
 Envolve a capacidade de integrar domínios administrativos diferentes mantendo a funcionalidade do sistema.
-
-\begin{figure}[H]
-\centering
-\captionof{figure}{Gráfico comparativo de escalabilidade entre diferentes arquiteturas distribuídas}
-\includegraphics[width=0.8\textwidth]{figure/placeholder.jpg}
-
-\label{fig:escalabilidade_comparacao}
-{\fontsize{10pt}{\baselineskip}\selectfont
-Fonte: Elaborado pelo autor}
-\end{figure}
 
 \subsection{Tolerância a Falhas e Recuperação}
 
@@ -676,7 +667,7 @@ Cada departamento foi configurado com duas VLANs distintas para otimizar o geren
     \item \textbf{VLAN 2 (Portas 13--24)}: 10 estações + 1 servidor + 1 impressora
 \end{itemize}
 
-A Tabela~\ref{tab:vlans_configuracao} detalha a configuração específica de cada VLAN:
+A Tabela \ref{tab:vlans_configuracao} detalha a configuração específica de cada VLAN:
 
 \begin{table}[H]
 \centering
@@ -702,6 +693,7 @@ A Tabela~\ref{tab:vlans_configuracao} detalha a configuração específica de ca
 & 41 & 13-24 & 192.168.1.112-192.168.1.126 & Dinâmico \\
 \hline
 \end{tabular}
+
 \label{tab:vlans_configuracao}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor}
@@ -745,6 +737,7 @@ A topologia em estrela foi implementada com um switch central conectando os quat
 \centering
 \captionof{figure}{Arquitetura Cliente-Servidor tradicional}
 \includegraphics[width=0.7\textwidth]{figure/cliente-server.png}
+
 \label{fig:cliente_servidor}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor}
@@ -754,6 +747,7 @@ Fonte: Elaborado pelo autor}
 \centering
 \captionof{figure}{Arquitetura Peer-to-Peer (P2P)}
 \includegraphics[width=0.7\textwidth]{figure/peer-to-peer.png}
+
 \label{fig:peer_to_peer}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Elaborado pelo autor}
@@ -762,7 +756,8 @@ Fonte: Elaborado pelo autor}
 \begin{figure}[H]
 \centering
 \captionof{figure}{Topologia em estrela implementada para a rede Super Tech}
-\includegraphics[width=0.9\textwidth]{figure/placeholder.jpg}
+\includegraphics[width=1\textwidth]{figure/rede-estrela.png}
+
 \label{fig:topologia_supertech}
 {\fontsize{10pt}{\baselineskip}\selectfont
 Fonte: Captura de tela do Cisco Packet Tracer - Elaborado pelo autor}
